@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_tracker/screens/moodentry_form.dart';
+import 'package:mental_health_tracker/screens/mood_entries.dart';
 import 'package:mental_health_tracker/widgets/left_drawer.dart';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 
 class ItemHomepage {
   final String name;
@@ -18,6 +21,8 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
     return Scaffold(
       drawer: const LeftDrawer(),
       body: Material(
@@ -28,7 +33,7 @@ class ItemCard extends StatelessWidget {
 
         child: InkWell(
           // Area responsif terhadap sentuhan
-          onTap: () {
+          onTap: () async {
             // Memunculkan SnackBar ketika diklik
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -38,8 +43,39 @@ class ItemCard extends StatelessWidget {
             // Navigate ke route yang sesuai (tergantung jenis tombol)
             if (item.name == "Tambah Mood") {
               // TODO: Gunakan Navigator.push untuk melakukan navigasi ke MaterialPageRoute yang mencakup MoodEntryFormPage.
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const MoodEntryFormPage()));
-            }
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MoodEntryFormPage()));
+            } else if (item.name == "Lihat Mood") {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MoodEntryPage()));
+            } else if (item.name == "Logout") {
+              final response = await request.logout(
+                  // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                  "http://rafansya-daryltama-mentalhealthtracker.pbp.cs.ui.ac.id/auth/logout/");
+              String message = response["message"];
+              if (context.mounted) {
+                  if (response['status']) {
+                      String uname = response["username"];
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("$message Sampai jumpa, $uname."),
+                      ));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const LoginPage()),
+                      );
+                  } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(message),
+                          ),
+                      );
+                  }
+              }
+          }
           },
           // Container untuk menyimpan Icon dan Text
           child: Container(

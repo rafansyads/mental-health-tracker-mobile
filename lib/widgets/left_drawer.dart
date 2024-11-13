@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_tracker/screens/menu.dart';
 import 'package:mental_health_tracker/screens/moodentry_form.dart';
-// TODO: Impor halaman MoodEntryPage jika sudah dibuat
+import 'package:mental_health_tracker/screens/mood_entries.dart'; // Import the MoodEntriesPage
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -27,8 +27,7 @@ class LeftDrawer extends StatelessWidget {
                   ),
                 ),
                 Padding(padding: EdgeInsets.all(8)),
-                Text(
-                  "Ayo jaga kesehatan mentalmu setiap hari disini!",
+                Text("Ayo jaga kesehatan mentalmu setiap hari disini!",
                   // TODO: Tambahkan gaya teks dengan center alignment, font ukuran 15, warna putih, dan weight biasa
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -45,28 +44,44 @@ class LeftDrawer extends StatelessWidget {
             // Bagian redirection ke MyHomePage
             onTap: () {
               Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MyHomePage(),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(),
+                )
+              );
             },
           ),
           ListTile(
-            leading: const Icon(Icons.mood),
+            leading: const Icon(Icons.add),
             title: const Text('Tambah Mood'),
             // Bagian redirection ke MoodEntryFormPage
             onTap: () {
               Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MoodEntryFormPage(),
-                  ));
-              /*
-              TODO: Buatlah routing ke MoodEntryFormPage di sini,
-              setelah halaman MoodEntryFormPage sudah dibuat.
-              */
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MoodEntryFormPage(),
+                )
+              );
             },
           ),
+          ListTile(
+              leading: const Icon(Icons.mood),
+              title: const Text('Lihat Daftar Mood'),
+              // Bagian redirection ke MoodEntriesPage
+              onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MoodEntryPage(),
+                ),
+              );
+            }
+          ),
+          // ListTile(
+          //   leading: const Icon(Icons.chevron_left_rounded)
+          //   title: const Text("Kembali ke Halaman Utama"),
+          //   // Bagian redirection ke MyHomePage
+          // )
         ],
       ),
     );
