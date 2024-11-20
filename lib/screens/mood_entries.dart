@@ -15,7 +15,9 @@ class _MoodEntryPageState extends State<MoodEntryPage> {
   Future<List<MoodEntry>> fetchMood(CookieRequest request) async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
     final response = await request.get(
-        'http://rafansya-daryltama-mentalhealthtracker.pbp.cs.ui.ac.id/json/');
+        // 'http://rafansya-daryltama-mentalhealthtracker.pbp.cs.ui.ac.id/json/');
+        // 'http://10.0.2.2/json/');
+        'http://localhost:8000/json/');
 
     // Melakukan decode response menjadi bentuk json
     var data = response;
